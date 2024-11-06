@@ -54,3 +54,70 @@ if __name__ == "__main__":
         chatbot(context)
     else:
         print("No document uploaded. Exiting.")
+
+#2.Summarization
+import pandas as pd
+from google.colab import files
+from google.colab import drive
+drive.mount('/content/drive/')
+path = "/content/drive/My\ Drive/Colab Notebooks/email_thread_details.csv"
+email_threads_details = pd.read_csv('/content/drive/My Drive/Colab Notebooks/email_thread_details.csv')
+email_threads_details
+email_threads_summaries = pd.read_csv('/content/drive/My Drive/Colab Notebooks/email_thread_summaries.csv')
+email_threads_summaries
+combined_data = pd.merge(email_threads_details, email_threads_summaries, on='thread_id')
+# instantiate a text summarization pipeline
+summarizer = pipeline('summarization')
+
+# Iterate over each email thread
+email_content = combined_data['body'].iloc[0]
+# Generate a summary using the text summarization pipeline
+summary = summarizer(email_content, max_length=10000, min_length=150, do_sample=False)
+# Print the original email content and the generated summary
+print("Original Email Content:")
+print(email_content)
+print("\nGenerated Summary:")
+print(summary[0]['summary_text'])
+print("-"*30)
+#3.Text classification based on sentiment analysis
+# instantiate a text classification pipeline
+classifier = pipeline('sentiment-analysis')
+
+# Iterate over each email thread
+email_content = combined_data['summary'].iloc[10]
+# Generate a classifier result using the classification pipeline
+classifier_result = classifier(email_content,max_length=512)
+# Print the original email contentn and the classifier rsult
+print("Original Email Content--------------:")
+print(email_content)
+print("\n\n Calssifer result:----------------")
+print(classifier_result)
+#4.Token classification
+# instantiate a token classification pipeline
+token_classifier = pipeline('ner')
+
+# Iterate over each email thread
+email_content = combined_data['body'].iloc[0]
+# Generate a token classifier result using the classification pipeline
+token_classifier_result = token_classifier(email_content)
+# Print the original email contentn and the token classifier rsult
+print("Original Email Content--------------:")
+print(email_content)
+print("\n\n Calssifer result:----------------")
+print(token_classifier_result)
+#5.Translation
+translation_content = combined_data['summary'][0]
+translation_content
+# instantiate a text classification pipeline
+translator = pipeline('translation_xx_to_yy', model='unicamp-dl/translation-en-pt-t5')
+
+# Iterate over each email thread
+translation_content = combined_data['summary'][0]
+# Generate a classifier result using the classification pipeline
+translation_result = translator(translation_content,max_length = 1000000)
+# Print the original email contentn and the classifier rsult
+print("Original  Content--------------:")
+print(translation_content)
+print("\n\n translation result:----------------")
+print(translation_result)
+
