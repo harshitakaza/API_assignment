@@ -1,0 +1,36 @@
+#!pip install --upgrade openai
+
+from openai import OpenAI
+
+client = OpenAI(api_key='')
+
+def chat_with_gpt():
+
+    print("Hello! I am your chatbot. Ask me anything, or type 'exit' to quit.")
+
+    while True:
+        # Take user input
+        user_input = input("You: ")
+
+        # Exit condition
+        if user_input.lower() == 'exit':
+            print("Goodbye!")
+            break
+
+        try:
+            # Create a response using GPT-4 model through the client
+            response = client.chat.completions.create(
+                model="ft:gpt-4o-mini-2024-07-18:personal:fine-tuned-sales:ANvD4eqz",
+                messages=[{"role": "user", "content": user_input}]
+            )
+
+            # Extract and print the bot's response
+            bot_response = response.choices[0].message.content
+            print("Bot:", bot_response)
+
+        except Exception as e:
+            print(f"An error occurred: {str(e)}")
+
+if __name__ == "__main__":
+    # Start the chatbot
+    chat_with_gpt()
