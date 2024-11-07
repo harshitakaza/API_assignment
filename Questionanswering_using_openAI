@@ -1,0 +1,29 @@
+pip install pandasai
+
+# Loading the API token to OpenAI environment
+llmodel = OpenAI(api_token='')
+
+# Initializing an instance of PandasAI with OpenAI environment
+sdf = SmartDataframe(communication_data, config={"llm": llmodel})
+communication_data
+#Create the prompt variable
+First_prompt = "Which month has the most number of occurences?"
+#Pass the prompt variable as parameter to the sdf instance function
+sdf.chat(First_prompt)
+communication_data[communication_data['month']=="October"].count()
+#Create the prompt variable
+Second_prompt = "Which subject has the most number of thread_id?"
+#Pass the prompt variable as parameter to the sdf instance function
+sdf.chat(Second_prompt)
+#Create the prompt variable
+Third_prompt = "Which summary has the most number of thread_id?"
+#Pass the prompt variable as parameter to the sdf instance function
+sdf.chat(Third_prompt)
+#Create the prompt variable
+Fourth_prompt = "Which summary has the most number of occurences?"
+#Pass the prompt variable as parameter to the sdf instance function
+sdf.chat(Fourth_prompt)
+#Create the prompt variable
+Fifth_prompt = "Which subject has the most number of occurences?"
+#Pass the prompt variable as parameter to the sdf instance function
+sdf.chat(Fifth_prompt)
